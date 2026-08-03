@@ -1,10 +1,10 @@
 # 🤖 Smart-Ops-Agent：基于 LangChain4j + DeepSeek 的金融级微服务智能诊断平台
 
-> **一句话简介**：专为千万级高并发、跨系统微服务（如云闪付绑卡链路）设计的 AI 运维诊断 Agent。通过 **ReAct 架构** 协同 ES、MySQL 与 SOP 知识库，实现线上突发故障从报错到根因分析的**秒级自动化定位**。
+> **一句话简介**：专为千万级高并发、跨系统微服务（如云闪付绑卡链路）设计的 AI 运维诊断 Agent。兼容 **JDK 8 / Spring Boot 2.7.x** 企业级生产环境，通过 **ReAct 架构** 协同 ES、MySQL 与 SOP 知识库，实现线上突发故障从报错到根因分析的**秒级自动化定位**。
 
-![Java 17](https://img.shields.io/badge/Java-17-orange.svg)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.2.5-green.svg)
-![LangChain4j](https://img.shields.io/badge/LangChain4j-0.31.0-blue.svg)
+![Java 8](https://img.shields.io/badge/Java-8%2B-orange.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7.18-green.svg)
+![LangChain4j](https://img.shields.io/badge/LangChain4j-0.29.1-blue.svg)
 ![DeepSeek](https://img.shields.io/badge/LLM-DeepSeek--R1%2FV3-purple.svg)
 ![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)
 
@@ -24,22 +24,6 @@
 [Result]  检测到持锁事务 TX_99812 已阻塞 51 秒...
 [Thought] 召回 RAG 运维 SOP 知识库并进行卡号脱敏，生成最终诊断报告。
 ==========================================================================
-
-## 📸 效果展示 (Quick Demo)
-
-输入线上报警的 `TraceId`，Agent 自主规划工具链并秒级输出 Markdown 格式的排查报告：
-
-```text
-==================== Agent 思考链 (ReAct Thought Trail) ====================
-[Thought] 收到报错请求，先根据 TraceId 查询 ES 堆栈日志...
-[Action]  Call @Tool: fetchErrorLogFromES(traceId="TRACE_UP_9901")
-[Result]  日志检测到 CannotAcquireLockException，涉及 t_bind_card_02 表行锁...
-[Thought] 发现 SQL 锁等待，进一步查询 MySQL sys.innodb_lock_waits 视图...
-[Action]  Call @Tool: inspectMySQLStatus(table="t_bind_card_02")
-[Result]  检测到持锁事务 TX_99812 已阻塞 51 秒...
-[Thought] 召回 RAG 运维 SOP 知识库并进行卡号脱敏，生成最终诊断报告。
-==========================================================================
-
 ```
 
 ---
@@ -47,6 +31,7 @@
 ## 🌟 核心特性 (Key Features)
 
 * 🧠 **ReAct 自主决策思考链**：基于 LangChain4j 声明式范式， Agent 可根据线上堆栈自主推理下一步诊断动作（查 ES 堆栈 → 查 MySQL 锁状态 → 检索 RAG SOP）。
+* 🔍 **☕ JDK 8 企业级兼容**：针对国内金融/大厂传统基础设施，完成 Spring Boot 2.7.x + JDK 1.8 适配与语法降级，同时具备平滑升级至 Java 17/SpringBoot 3 的扩展能力。
 * 🔍 **RAG 运维知识库增强**：集成向量数据库与 Hybrid Search（混合检索），将历史上千条绑卡链路 SOP 向量化，故障定位精准度提升至 **85%+**。
 * 🛡️ **金融级安全与防幻觉机制**：
 * **只读 SQL 熔断器**：通过 AST/正则拦截一切非 `SELECT` 的破坏性 SQL，彻底杜绝大模型“幻觉误删库”。
@@ -98,12 +83,12 @@
 
 ## 🛠️ 技术栈 (Tech Stack)
 
-| 领域 | 技术方案 |
-| --- | --- |
-| **核心框架** | Java 17 / Spring Boot 3.2.5 |
-| **AI Agent 框架** | LangChain4j 0.31.0 |
-| **大模型 (LLM)** | DeepSeek-V3 / DeepSeek-R1 / OpenAI API |
-| **中间件 & 工具** | ElasticSearch / MySQL / Redis / Dubbo |
+| 领域 | 技术方案 |备注 |
+| --- | --- | --- |
+| **核心框架** | Java 1.8+ / Maven 3.6+ |兼顾传统金融/企业生产环境 |
+| **AI Agent 框架** | LangChain4j 0.29.1 |稳定企业级底座
+| **大模型 (LLM)** | DeepSeek-V3 / DeepSeek-R1 / OpenAI API |支持 JDK 8 的稳定版本
+| **中间件 & 工具** | ElasticSearch / MySQL / Redis / Dubbo |兼容 OpenAI 协议
 | **向量检索 (RAG)** | Qdrant / Pgvector (支持 Hybrid Search) |
 
 ---
