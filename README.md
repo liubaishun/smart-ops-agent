@@ -1,5 +1,3 @@
-
-```markdown
 # 🤖 Smart-Ops-Agent：基于 LangChain4j + DeepSeek 的金融级微服务智能诊断平台
 
 > **一句话简介**：专为千万级高并发、跨系统微服务（如云闪付绑卡链路）设计的 AI 运维诊断 Agent。通过 **ReAct 架构** 协同 ES、MySQL 与 SOP 知识库，实现线上突发故障从报错到根因分析的**秒级自动化定位**。
@@ -11,6 +9,21 @@
 ![License](https://img.shields.io/badge/License-Apache%202.0-red.svg)
 
 ---
+
+## 📸 效果展示 (Quick Demo)
+
+输入线上报警的 `TraceId`，Agent 自主规划工具链并秒级输出 Markdown 格式的排查报告：
+
+```text
+==================== Agent 思考链 (ReAct Thought Trail) ====================
+[Thought] 收到报错请求，先根据 TraceId 查询 ES 堆栈日志...
+[Action]  Call @Tool: fetchErrorLogFromES(traceId="TRACE_UP_9901")
+[Result]  日志检测到 CannotAcquireLockException，涉及 t_bind_card_02 表行锁...
+[Thought] 发现 SQL 锁等待，进一步查询 MySQL sys.innodb_lock_waits 视图...
+[Action]  Call @Tool: inspectMySQLStatus(table="t_bind_card_02")
+[Result]  检测到持锁事务 TX_99812 已阻塞 51 秒...
+[Thought] 召回 RAG 运维 SOP 知识库并进行卡号脱敏，生成最终诊断报告。
+==========================================================================
 
 ## 📸 效果展示 (Quick Demo)
 
@@ -150,8 +163,3 @@ java -jar target/smart-ops-agent-1.0.0-SNAPSHOT.jar
 ## 📄 开源协议 (License)
 
 本项目遵循 [Apache 2.0 License](https://www.google.com/search?q=LICENSE) 开源协议。
-
-```
-
-
-```
