@@ -113,7 +113,7 @@
 ### 1. 克隆项目与配置环境
 
 ```bash
-git clone [https://github.com/your-username/smart-ops-agent.git](https://github.com/your-username/smart-ops-agent.git)
+git clone https://github.com/liubaishun/smart-ops-agent.git
 cd smart-ops-agent
 
 ```
