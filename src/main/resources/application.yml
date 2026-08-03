@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: smart-ops-agent
+
+# 大模型及 Agent 诊断参数设置
+smart-ops:
+  agent:
+    llm:
+      base-url: https://api.deepseek.com
+      api-key: ${DEEPSEEK_API_KEY:demo-key}
+      model-name: deepseek-chat
+      temperature: 0.1
