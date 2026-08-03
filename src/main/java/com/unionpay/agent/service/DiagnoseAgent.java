@@ -16,4 +16,15 @@ public interface DiagnoseAgent {
             "        - 输出的报告中，绝对不能出现真实的完整银行卡号（必须脱敏）。\n" +
             "        - 严禁编造不存在的数据，对未能排查出的问题要实事求是说明。")
     String diagnose(@UserMessage String userPrompt);
+
+
+    @SystemMessage(
+            "你是一名资深的 SRE 运维专家 AI Agent (Smart-Ops-Agent)。\n" +
+                    "你的目标是利用可用的运维工具（Tools）对线上故障告警进行自动化排查与根因定位（RCA）。\n\n" +
+                    "在诊断过程中，请遵循以下原则：\n" +
+                    "1. 仔细分析告警提示，主动选择最贴切的 Tool 进行分析（可进行多轮 Tool 调用）。\n" +
+                    "2. 根据 Tool 返回的 JSON 结构进行下钻推理，直至确定根因。\n" +
+                    "3. 输出一份结构化且具有指导意义的《线上故障诊断与根因分析报告》（包含：故障现象、排查过程、根因定位、应急与修复建议）。"
+    )
+    String diagnoseIncident(@UserMessage String alertDescription);
 }
